@@ -1,29 +1,15 @@
 import { NextResponse } from "next/server"
-
-// the base route gets the now playing movies
+import { GetTrending } from "../tmdb"
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url)
     const time_window = searchParams.get('time') || 'day'
     const lang = searchParams.get('lang') || 'en-US'
     try {
-        const options = {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization: `Bearer ${process.env.TMDB_API_TOKEN}`
-            }
-        }
-
-        const res = await fetch(`https://api.themoviedb.org/3/trending/all/${time_window}?language=${lang}`, options)
-
-        if (!res.ok) {
-            return NextResponse.json({ error: "Failed to fetch movies" }, { status: 500 })
-        }
-
-        const data = await res.json()
+        const data = await GetTrending(time_window, lang)
+        if (!data) throw new Error("No data received from database")
         return NextResponse.json(data)
     } catch (error) {
-        console.error('Error fetching now playing movies:', error)
+        console.error('Error in GET /api/movies/trending:', error)
         return NextResponse.json({ error: "Internal server error" }, { status: 500 })
     }
 }

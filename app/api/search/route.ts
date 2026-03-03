@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { SearchQueryTypes } from "@/lib/models/search-query"
+import { SearchTMDBDatabase } from "./tmdb"
 
 function computeType(type: string): SearchQueryTypes {
     return Object.values(SearchQueryTypes).includes(type as SearchQueryTypes)
@@ -19,21 +20,8 @@ export async function GET(request: Request) {
     }
 
     try {
-        const options = {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization: `Bearer ${process.env.TMDB_API_TOKEN}`
-            }
-        }
-
-        const res = await fetch(`https://api.themoviedb.org/3/search/${computeType(type)}?query=${encodeURIComponent(query)}&page=${page}&language=${lang}}&include_adult=true&include_video=true`, options)
-
-        if (!res.ok) {
-            return NextResponse.json({ error: "Failed to search" }, { status: 500 })
-        }
-
-        const data = await res.json()
+        const data = await SearchTMDBDatabase(query, computeType(type), page, lang)
+        if (!data) throw new Error("No data received from database")
         return NextResponse.json(data)
     } catch (error) {
         console.error('Error searching:', error)

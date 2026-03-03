@@ -66,7 +66,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent" />
 
         {/* Serie Info Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
@@ -119,7 +119,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Poster */}
           <div className="md:col-span-1">
-            <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden shadow-2xl">
+            <div className="relative aspect-2/3 w-full rounded-xl overflow-hidden shadow-2xl">
               {serie.poster_path && (
                 <Image
                   src={getMediaImage(DBImageSizes.w500, serie.poster_path)!}
@@ -205,7 +205,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
                 {serie.credits.cast.slice(0, 15).map((person) => (
                   <CarouselItem key={person.id} className="basis-1/2 md:basis-1/4 lg:basis-1/6">
                     <Card className="overflow-hidden">
-                      <div className="relative aspect-[2/3] w-full">
+                      <div className="relative aspect-2/3 w-full">
                         {person.profile_path ? (
                           <Image
                             src={getMediaImage(DBImageSizes.w185, person.profile_path)!}
@@ -246,7 +246,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
                   <CarouselItem key={similar.id} className="basis-1/2 md:basis-1/3 lg:basis-1/5">
                     <Link href={`/series/${similar.id}`}>
                       <Card className="overflow-hidden hover:ring-2 hover:ring-primary transition-all cursor-pointer">
-                        <div className="relative aspect-[2/3] w-full">
+                        <div className="relative aspect-2/3 w-full">
                           {similar.poster_path && (
                             <Image
                               src={getMediaImage(DBImageSizes.w342, similar.poster_path)!}

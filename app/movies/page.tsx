@@ -1,34 +1,21 @@
 import CarouselSection from "@/components/carousel-section"
 import Config from "@/lib/config"
+import { GetNowPlaying, GetUpcoming, GetTrending, GetTopRated, GetPopular } from "../api/movies/tmdb"
 
 const movieCategories = [
-  { key: "nowPlaying", title: "Now Playing", endpoint: "/api/movies/now_playing" },
-  { key: "upcoming", title: "Upcoming", endpoint: "/api/movies/upcoming" },
-  { key: "trending", title: "Trending", endpoint: "/api/movies/trending" },
-  { key: "topMovies", title: "TOP 20", endpoint: "/api/movies/popular" },
-  { key: "topRated", title: "Top Rated", endpoint: "/api/movies/top_rated" },
+  { key: "nowPlaying", title: "Now Playing", data: GetNowPlaying() },
+  { key: "upcoming", title: "Upcoming", data: GetUpcoming() },
+  { key: "trending", title: "Trending", data: GetTrending() },
+  { key: "topMovies", title: "TOP 20", data: GetPopular() },
+  { key: "topRated", title: "Top Rated", data: GetTopRated() },
 ]
 
-async function fetchMovies(endpoint: string) {
-  try {
-    const res = await fetch(`${Config.baseUrl}${endpoint}`, { next: { revalidate: 3600 } })
-    if (!res.ok) throw new Error("Failed to fetch")
-    const data = await res.json()
-    return data.results || []
-  } catch (e) {
-    console.error(e)
-    return []
-  }
-}
-
 export default async function Home() {
-  const results = await Promise.all(
-    movieCategories.map(cat => fetchMovies(cat.endpoint))
-  )
+  const results = await Promise.all(movieCategories.map((cat) => cat.data))
 
   const moviesByCategory: Record<string, Movie[]> = {}
   movieCategories.forEach((cat, idx) => {
-    moviesByCategory[cat.key] = results[idx]
+    moviesByCategory[cat.key] = results[idx].results
     .map((movie: Movie) => ({
         id: movie.id,
         title: movie.title,
