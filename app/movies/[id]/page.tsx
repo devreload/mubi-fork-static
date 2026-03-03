@@ -21,6 +21,7 @@ import Config from "@/lib/config"
 import { VideoWrapper } from "@/components/VideoWrapper"
 import { Badge } from "@/components/ui/badge"
 import { Star, Video } from "lucide-react"
+import { DBImageSizes } from "../../../lib/models/dbimage"
 
 async function getMovieDetails(id: string): Promise<MovieDetails | null> {
   try {
@@ -68,7 +69,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
       <section className="relative h-[60vh] md:h-[70vh] w-full">
         {movie.backdrop_path && (
           <Image
-            src={getMediaImage('original', movie.backdrop_path)}
+            src={getMediaImage(DBImageSizes.original, movie.backdrop_path)!}
             alt={movie.title}
             fill
             sizes="70vw"
@@ -76,7 +77,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent" />
         
         {/* Movie Info Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
@@ -120,10 +121,10 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Poster */}
           <div className="md:col-span-1">
-            <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden shadow-2xl">
+            <div className="relative aspect-2/3 w-full rounded-xl overflow-hidden shadow-2xl">
               {movie.poster_path && (
                 <Image
-                  src={getMediaImage('w500', movie.poster_path)}
+                  src={getMediaImage(DBImageSizes.w500, movie.poster_path)!}
                   alt={movie.title}
                   fill
                   sizes="10vw"
@@ -210,10 +211,10 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                 {movie.credits.cast.slice(0, 15).map((person) => (
                   <CarouselItem key={person.id} className="basis-1/2 md:basis-1/4 lg:basis-1/6">
                     <Card className="overflow-hidden">
-                      <div className="relative aspect-[2/3] w-full">
+                      <div className="relative aspect-2/3 w-full">
                         {person.profile_path ? (
                           <Image
-                            src={getMediaImage('w185', person.profile_path)!}
+                            src={getMediaImage(DBImageSizes.w154, person.profile_path)!}
                             alt={person.name}
                             fill
                             sizes="10vw"
@@ -251,10 +252,10 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                   <CarouselItem key={similar.id} className="basis-1/2 md:basis-1/3 lg:basis-1/5">
                     <Link href={`/movies/${similar.id}`}>
                       <Card className="overflow-hidden hover:ring-2 hover:ring-primary transition-all cursor-pointer">
-                        <div className="relative aspect-[2/3] w-full">
+                        <div className="relative aspect-2/3 w-full">
                           {similar.poster_path && (
                             <Image
-                              src={getMediaImage('w342', similar.poster_path)}
+                              src={getMediaImage(DBImageSizes.w342, similar.poster_path)!}
                               alt={similar.title}
                               fill
                               sizes="10vw"
@@ -289,7 +290,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                   {company.logo_path && (
                     <div className="relative w-16 h-16">
                       <Image
-                        src={getMediaImage('w92', company.logo_path)}
+                        src={getMediaImage(DBImageSizes.w92, company.logo_path)!}
                         alt={company.name}
                         fill
                         sizes="5vw"
