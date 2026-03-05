@@ -18,7 +18,7 @@ async function testDomains(provider: string, domains: string[]): Promise<string>
     // test domains until one responds
     for (const domain of domains) {
         try {
-            const res = await fetch(`http://${domain}`, { method: 'HEAD', cache: "no-store" })
+            const res = await fetch(`https://${domain}`, { method: 'HEAD', cache: "no-store" })
             if (res.ok) {
                 domainCache.set(provider, { domain, timestamp: now })
                 return domain
@@ -35,12 +35,10 @@ async function testDomains(provider: string, domains: string[]): Promise<string>
 }
 
 export async function computeProviderUrl(id: string, provider: string, mediaType: MediaTypes, season?: string, episode?: string): Promise<string> {
-    const p = Config.vidsrcProviders.find(pr => pr.provider === provider) || Config.vidsrcProviders.find(pr => pr.provider === Config.vidsrcProvidersDefault)
-
-    if (!p) throw new Error("Provider not found")
+    const p = Config.vidsrcProviders[0]
 
     const pathTemplate = p.paths[mediaType] || p.paths.movie
-    const bestDomain = await testDomains(provider, p.domains)
+    const bestDomain = p.domains[0]
     const url = `${p.protocol}://${bestDomain}${pathTemplate
         .replace("{id}", id)
         .replace("{s}", season || "1")
