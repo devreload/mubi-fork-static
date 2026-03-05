@@ -18,7 +18,7 @@ async function testDomains(provider: string, domains: string[]): Promise<string>
     // test domains until one responds
     for (const domain of domains) {
         try {
-            const res = await fetch(`https://${domain}`, { method: 'HEAD', cache: "no-store" })
+            const res = await fetch(`http://${domain}`, { method: 'HEAD', cache: "no-store" })
             if (res.ok) {
                 domainCache.set(provider, { domain, timestamp: now })
                 return domain
