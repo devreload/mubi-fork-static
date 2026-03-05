@@ -28,12 +28,9 @@ export function VideoWrapper({ id, mediaType = MediaTypes.Movie, season = 1, epi
                 params.set("season", String(season))
                 params.set("episode", String(episode))
             }
-            const res = await fetch(Config.baseUrl + `/api/vidsrc/${id}?${params.toString()}`)
-            if (!res.ok) {
-                throw new Error("Failed to fetch video source")
-            }
+            const res = await fetch(`/api/vidsrc/${id}?${params.toString()}`)
+            if (!res.ok) return null
             const data = await res.json()
-            console.log("Video source data:", data)
             return data.embedUrl
         } catch (error) {
             console.error("Error fetching video source:", error)
@@ -65,10 +62,7 @@ export function VideoWrapper({ id, mediaType = MediaTypes.Movie, season = 1, epi
         if (isPlaying) {
             setVideoSrc(null)
             setError(null)
-            fetchVideoSource(id, provider).then(src => {
-                if (!src) setError("Error loading video.")
-                else setVideoSrc(src)
-            })
+            setVideoSrc("https://vidsrc-embed.ru/embed/movie?tmdb=1290821")
             const initialTimeout = setTimeout(() => {
                 setShowControls(false)
             }, 3000)
@@ -82,7 +76,7 @@ export function VideoWrapper({ id, mediaType = MediaTypes.Movie, season = 1, epi
     }, [isPlaying, season, episode, provider])
 
     return (
-        <div className="relative w-full aspect-video bg-black overflow-hidden p-0 rounded-xl border-1 border-secondary/50" onMouseMove={handleMouseMove}>
+        <div className="relative w-full aspect-video bg-black overflow-hidden p-0 rounded-xl border border-secondary/50" onMouseMove={handleMouseMove}>
             <div className={`absolute top-4 right-4 z-10 transition-opacity duration-300 ${isPlaying && !showControls ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                 <Select value={provider} onValueChange={(val) => { if (val) setProvider(val) }}>
                     <SelectTrigger className="w-36">
