@@ -63,7 +63,7 @@ export async function GetSerieVideos(id: string, lang: string = "en-US") {
     return data
 }
 
-export async function GetSerieDetails(id: string, lang: string = "en-US", details: boolean = true) {
+export async function GetSerieDetails(id: string, lang: string = "en-US", details: boolean = true): Promise<SerieDetails> {
     const serieData = await GetSerieById(id, lang)
     if (!serieData) throw new Error("No data received from database")
     if (!details) return serieData

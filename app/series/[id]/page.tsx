@@ -22,25 +22,11 @@ import { EpisodeSelector } from "@/components/EpisodeSelector"
 import { Badge } from "@/components/ui/badge"
 import { Star, Video } from "lucide-react"
 import { DBImageSizes } from "../../../lib/models/dbimage"
-
-async function getSerieDetails(id: string): Promise<SerieDetails | null> {
-  try {
-    const res = await fetch(`${Config.baseUrl}/api/series/${id}`, { next: { revalidate: 3600 } })
-
-    if (!res.ok) {
-      return null
-    }
-
-    return res.json()
-  } catch (error) {
-    console.error('Error fetching serie details:', error)
-    return null
-  }
-}
+import { GetSerieDetails } from "../../api/series/tmdb"
 
 export default async function SeriePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const serie = await getSerieDetails(id)
+  const serie = await GetSerieDetails(id)
 
   if (!serie) {
     notFound()

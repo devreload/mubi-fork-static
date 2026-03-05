@@ -70,7 +70,7 @@ export async function GetMovieVideos(id: string, lang: string = "en-US") {
     return data
 }
 
-export async function GetMovieDetails(id: string, lang: string = "en-US", details: boolean = true) {
+export async function GetMovieDetails(id: string, lang: string = "en-US", details: boolean = true): Promise<MovieDetails> {
     try {
         const movieData = await GetMovieById(id, lang)
         if (!details) {
