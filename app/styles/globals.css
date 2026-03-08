@@ -1,9 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@import "./theme-default.css";
+/*@import "./theme-default.css";*/
 @import "./theme-yellow.css";
-@import "./theme-emerald.css";
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme^="dark-"], [data-theme="dark"] *, [data-theme^="dark-"] *));
 
@@ -47,10 +46,10 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 scroll-smooth;
   }
   html, body {
-    @apply font-sans bg-background text-foreground m-0 p-0;
+    @apply font-sans bg-background text-foreground m-0 p-0 scroll-smooth;
   }
 }
 

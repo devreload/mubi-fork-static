@@ -30,7 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang={Config.lang} suppressHydrationWarning>
       <body className={`${lexend.variable} antialiased`}>
-          <ThemeProvider attribute="data-theme" defaultTheme={ThemeNames.DarkYellow} enableSystem enableColorScheme disableTransitionOnChange themes={Object.values(ThemeNames) as string[]}>
+          <ThemeProvider attribute="data-theme" defaultTheme={ThemeNames.Dark} enableSystem enableColorScheme disableTransitionOnChange themes={Object.values(ThemeNames) as string[]}>
             <Navbar />
             <main className="sm:pt-0 pt-16 sm:pl-20 flex-1 min-h-screen">
               {children}
