@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { VideoWrapper } from "@/components/VideoWrapper"
+import { VideoWrapper } from "@/components/video-wrapper"
 import { MediaTypes } from "@/lib/models/mediatype"
 import {
     Accordion,

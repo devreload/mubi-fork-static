@@ -1,17 +1,18 @@
 import CarouselSection from "@/components/carousel-section"
-import Config from "@/lib/config"
 import { GetNowPlaying, GetUpcoming, GetTrending, GetTopRated, GetPopular } from "../api/movies/tmdb"
 
 const movieCategories = [
-  { key: "nowPlaying", title: "Now Playing", data: GetNowPlaying() },
-  { key: "upcoming", title: "Upcoming", data: GetUpcoming() },
-  { key: "trending", title: "Trending", data: GetTrending() },
-  { key: "topMovies", title: "TOP 20", data: GetPopular() },
-  { key: "topRated", title: "Top Rated", data: GetTopRated() },
+  { key: "nowPlaying", title: "Now Playing", fn: GetNowPlaying },
+  { key: "upcoming", title: "Upcoming", fn: GetUpcoming },
+  { key: "trending", title: "Trending", fn: GetTrending },
+  { key: "topMovies", title: "TOP 20", fn: GetPopular },
+  { key: "topRated", title: "Top Rated", fn: GetTopRated },
 ]
 
 export default async function Home() {
-  const results = await Promise.all(movieCategories.map((cat) => cat.data))
+  const results = await Promise.all(
+    movieCategories.map((cat) => cat.fn())
+  )
 
   const moviesByCategory: Record<string, Movie[]> = {}
   movieCategories.forEach((cat, idx) => {

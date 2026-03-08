@@ -1,20 +1,21 @@
 import CarouselSection from "@/components/carousel-section"
 import HeroSection from "@/components/hero-section"
-import Config from "@/lib/config"
 import PageHeader from "@/components/header"
 import { type CardItem } from "@/lib/models/card-item"
 import { GetNowPlaying, GetTopRated, GetPopular, GetTrending, GetUpcoming } from "./api/movies/tmdb"
 
 const movieCategories = [
-  { key: "nowPlaying", title: "Now Playing", data: GetNowPlaying() },
-  { key: "upcoming", title: "Upcoming", data: GetUpcoming() },
-  { key: "trending", title: "Trending", data: GetTrending() },
-  { key: "topMovies", title: "TOP 20", data: GetPopular() },
-  { key: "topRated", title: "Top Rated", data: GetTopRated() },
+  { key: "nowPlaying", title: "Now Playing", fn: GetNowPlaying },
+  { key: "upcoming", title: "Upcoming", fn: GetUpcoming },
+  { key: "trending", title: "Trending", fn: GetTrending },
+  { key: "topMovies", title: "TOP 20", fn: GetPopular },
+  { key: "topRated", title: "Top Rated", fn: GetTopRated },
 ]
 
 export default async function Home() {
-  const results = await Promise.all(movieCategories.map(cat => cat.data))
+  const results = await Promise.all(
+    movieCategories.map((cat) => cat.fn())
+  )
 
   const movieOTW: Movie | undefined = results[0].results[0]; // First movie from "Now Playing" category
 

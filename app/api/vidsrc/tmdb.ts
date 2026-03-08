@@ -1,45 +1,39 @@
-import Config from "@/lib/config"
+import VidsrcProviders from "@/lib/vidsrc-providers"
 import { MediaTypes } from "@/lib/models/mediatype"
+import { unstable_cache } from "next/cache"
 
-// Simple in-memory cache for domain verification results
-const domainCache = new Map<string, { domain: string, timestamp: number }>()
-const CACHE_TTL_MS = 12 * 60 * 60 * 1000 // 12 hours
+const CACHE_TTL = 12 * 60 * 60 // 12 hours in seconds
 
-// Verifies the provider and constructs the url, if some embedded content is found use that url, if not use another in the list
-async function testDomains(provider: string, domains: string[]): Promise<string> {
-    const now = Date.now()
-    const cached = domainCache.get(provider)
-
-    // return cached domain if not expired
-    if (cached && now - cached.timestamp < CACHE_TTL_MS) {
-        return cached.domain
-    }
-
-    // test domains until one responds
+// Tests domains and returns the first one that responds
+async function testDomains(domains: string[]): Promise<string> {
     for (const domain of domains) {
         try {
-            const res = await fetch(`https://${domain}`, { method: 'HEAD', cache: "no-store" })
-            if (res.ok) {
-                domainCache.set(provider, { domain, timestamp: now })
-                return domain
-            }
+            const res = await fetch(domain, { method: "HEAD", mode: "no-cors", cache: "no-store" })
+            if (res.ok) return domain
         } catch {
             continue
         }
     }
-
-    // fallback to first domain
-    const fallback = domains[0]
-    domainCache.set(provider, { domain: fallback, timestamp: now })
-    return fallback
+    return domains[0]
 }
 
-export async function computeProviderUrl(id: string, provider: string, mediaType: MediaTypes, season?: string, episode?: string): Promise<string> {
-    const p = Config.vidsrcProviders[0]
+// Caches the resolved domain per provider in Vercel's data cache for 12 hours
+function getCachedDomain(provider: string, domains: string[]) {
+    return unstable_cache(
+        async () => testDomains(domains),
+        ["vidsrc-domain", provider],
+        { revalidate: CACHE_TTL }
+    )()
+}
+
+export async function GetProviderVidsrc(id: string, provider: string, mediaType: MediaTypes, season?: string, episode?: string): Promise<string> {
+    const p = VidsrcProviders.providers[provider] || VidsrcProviders.providers[VidsrcProviders.default]
+
+    if (!p) throw new Error("Provider not found")
 
     const pathTemplate = p.paths[mediaType] || p.paths.movie
-    const bestDomain = p.domains[0]
-    const url = `${p.protocol}://${bestDomain}${pathTemplate
+    const testedDomain = await getCachedDomain(provider, p.domains)
+    const url = `${testedDomain}${pathTemplate
         .replace("{id}", id)
         .replace("{s}", season || "1")
         .replace("{e}", episode || "1")}`

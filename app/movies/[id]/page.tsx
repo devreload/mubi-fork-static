@@ -17,12 +17,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { getMediaImage } from "@/lib/utils"
-import Config from "@/lib/config"
-import { VideoWrapper } from "@/components/VideoWrapper"
+import { VideoWrapper } from "@/components/video-wrapper"
 import { Badge } from "@/components/ui/badge"
 import { Star, Video } from "lucide-react"
 import { DBImageSizes } from "../../../lib/models/dbimage"
 import {GetMovieDetails} from "../../api/movies/tmdb"
+import { MediaTypes } from "@/lib/models/mediatype"
 
 function formatRuntime(minutes: number): string {
   const hours = Math.floor(minutes / 60)
@@ -99,7 +99,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
       </section>
 
       <div className="max-w-7xl mx-auto mt-8">
-        <VideoWrapper id={id} />
+        <VideoWrapper id={id} mediaType={MediaTypes.Movie} />
       </div>
 
       {/* Main Content */}
