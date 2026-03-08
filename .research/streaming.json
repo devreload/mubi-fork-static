@@ -1,0 +1,68 @@
+{
+    "version": "1.0",
+    "services": [
+        {
+            "name": "DoodStream",
+            "url": "https://doodstream.com.tr/",
+            "alternativeUrls": [
+                {"url": "https://doodstream.me/", "live": true},
+                {"url": "https://doodstream.com/", "live": true}
+            ],
+            "live": true,
+            "payout": 1,
+            "type": "video"
+        },
+        {
+            "name": "StreamTape",
+            "url": "https://watchadsontape.com/",
+            "alternativeUrls": [
+                {"url": "https://streamtape.com/", "live": true},
+                {"url": "https://streamtape.to/", "live": true}
+            ],
+            "live": true,
+            "payout": 1,
+            "type": "video"
+        },
+        {
+            "name": "StreamSB",
+            "url": "https://streamsb.net/",
+            "alternativeUrls": [
+                {"url": "https://support.streamsb.com/auth/login", "live": false}
+            ],
+            "live": true,
+            "payout": 0,
+            "type": "media"
+        },
+        {
+            "name": "MixDrop",
+            "url": "https://mixdrop.ag/",
+            "alternativeUrls": [
+                {"url": "https://mixdrop.co/", "live": true},
+                {"url": "https://mixdrop.to/", "live": true}
+            ],
+            "live": true,
+            "payout": 0,
+            "type": "media"
+        },
+        {
+            "name": "DropDownload",
+            "url": "https://drop.download/",
+            "alternativeUrls": [],
+            "live": true,
+            "payout": 0,
+            "type": "media"
+        },
+        {
+            "name": "Gomo.To",
+            "url": "https://gomo.to/",
+            "alternativeUrls": [
+                {"url": "putplayer.com", "live": true},
+                {"url": "123moviesplayer.com", "live": true},
+                {"url": "playerhost.net", "live": true}
+            ],
+            "live": true,
+            "payout": 0,
+            "type": "video"
+        }
+    ]
+}

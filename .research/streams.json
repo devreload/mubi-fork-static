@@ -1,0 +1,143 @@
+{
+    "version": "1.0",
+    "movies": [
+        {
+            "name": "2Embed",
+            "mainStream": "2Embed.Stream",
+            "streams": [
+                {"name": "2Embed.Stream", "endpoint": "https://www.2embed.stream/embed/movie/{id}", "live": true, "owner": "2Embed.Stream"},
+                {"name": "2Embed.Pro", "endpoint": "https://2embed.pro/embed/movie/{id}", "live": false, "owner": "2Embed.Pro"},
+                {"name": "2Embed.Cc", "endpoint": "https://www.2embed.cc/embed/{id}", "live": true, "owner": "2Embed.Cc"},
+                {"name": "2Embed.Skin", "endpoint": "https://www.2embed.skin/embed/{id}", "live": true, "owner": "2Embed.Cc"},
+                {"name": "2Embed.Org", "endpoint": "https://2embed.org/embed/movie/{id}", "live": true, "owner": "2Embed.Org"}
+            ]
+        },
+        {
+            "name": "VidSrc",
+            "mainStream": "VidSrc.Icu",
+            "streams": [
+                {"name": "VidSrc.Net", "endpoint": "https://vidsrc.net/embed/movie?imdb={id}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.Xyz", "endpoint": "https://vidsrc.xyz/embed/movie?imdb={id}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.Me", "endpoint": "https://vidsrc.me/embed/movie?imdb={id}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.Pm", "endpoint": "https://vidsrc.pm/embed/movie?imdb={id}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.In", "endpoint": "https://vidsrc.in/embed/movie?imdb={id}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.Cc", "endpoint": "https://vidsrc.cc/v2/embed/movie/{id}", "live": true, "owner": "VidSrc.Cc"},
+                {"name": "VidSrc.Icu", "endpoint": "https://vidsrc.icu/embed/movie/{id}", "live": true, "owner": "VidSrc.Icu"}
+            ]
+        },
+        {
+            "name": "NontonGo",
+            "mainStream": "NontonGo.Win",
+            "streams": [
+                {"name": "NontonGo.Win", "endpoint": "https://www.NontonGo.win/embed/movie/{id}", "live": true, "owner": "NontonGo.Win"}
+            ]
+        },
+        {
+            "name": "SuperEmbed",
+            "mainStream": "Multiembed.Mov",
+            "streams": [
+                {"name": "Multiembed.Mov", "endpoint": "https://multiembed.mov/?video_id={id}", "live": true, "owner": "Superembed.Stream"}
+            ]
+        },
+        {
+            "name": "Godriveplayer",
+            "mainStream": "Godriveplayer.Com",
+            "streams": [
+                {"name": "Godriveplayer.Com", "endpoint": "https://godriveplayer.com/player.php?imdb={id}", "live": true, "owner": "Godriveplayer.Com"}
+            ]
+        }
+    ],
+    "series": [
+        {
+            "name": "2Embed",
+            "mainStream": "2Embed.Stream",
+            "streams": [
+                {"name": "2Embed.Stream", "endpoint": "https://www.2embed.stream/embed/tv/{id}/{season}/{episode}", "live": true, "owner": "2Embed.Stream"},
+                {"name": "2Embed.Pro", "endpoint": "https://2embed.pro/embed/tv/{id}&s={season}&e={episode}", "live": false, "owner": "2Embed.Pro"},
+                {"name": "2Embed.Cc", "endpoint": "https://www.2embed.cc/embedtv/{id}&s={season}&e={episode}", "live": true, "owner": "2Embed.Cc"},
+                {"name": "2Embed.Skin", "endpoint": "https://www.2embed.skin/embedtv/{id}&s={season}&e={episode}", "live": true, "owner": "2Embed.Cc"},
+                {"name": "2Embed.Org", "endpoint": "https://2embed.org/embed/tv/{id}/{season}/{episode}", "live": true, "owner": "2Embed.Org"}
+            ]
+        },
+        {
+            "name": "VidSrc",
+            "mainStream": "VidSrc.Icu",
+            "streams": [
+                {"name": "VidSrc.Net", "endpoint": "https://vidsrc.net/embed/tv?imdb={id}&season={season}&episode={episode}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.Xyz", "endpoint": "https://vidsrc.xyz/embed/tv?imdb={id}&season={season}&episode={episode}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.Me", "endpoint": "https://vidsrc.me/embed/tv?imdb={id}&season={season}&episode={episode}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.Pm", "endpoint": "https://vidsrc.pm/embed/tv?imdb={id}&season={season}&episode={episode}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.In", "endpoint": "https://vidsrc.in/embed/tv?imdb={id}&season={season}&episode={episode}", "live": true, "owner": "VidSrc.Net"},
+                {"name": "VidSrc.Cc", "endpoint": "https://vidsrc.cc/v2/embed/tv/{id}/{season}/{episode}", "live": true, "owner": "VidSrc.Cc"},
+                {"name": "VidSrc.Icu", "endpoint": "https://vidsrc.icu/embed/tv/{id}/{season}/{episode}", "live": true, "owner": "VidSrc.Icu"}
+            ]
+        },
+        {
+            "name": "NontonGo",
+            "mainStream": "NontonGo.Win",
+            "streams": [
+                {"name": "NontonGo.Win", "endpoint": "https://www.NontonGo.win/embed/tv/?id={id}&s={season}&e={episode}", "live": true, "owner": "NontonGo.Win"}
+            ]
+        },
+        {
+            "name": "SuperEmbed",
+            "mainStream": "Multiembed.Mov",
+            "streams": [
+                {"name": "Multiembed.Mov", "endpoint": "https://multiembed.mov/?video_id={id}&s={season}&e={episode}", "live": true, "owner": "Superembed.Stream"}
+            ]
+        },
+        {
+            "name": "Godriveplayer",
+            "mainStream": "Godriveplayer.Com",
+            "streams": [
+                {"name": "Godriveplayer.Com", "endpoint": "https://godriveplayer.com/player.php?type=series&imdb={id}&season={season}&episode={episode}", "live": true, "owner": "Godriveplayer.Com"}
+            ]
+        }
+    ],
+    "anime": [
+        {
+            "name": "2Anime",
+            "mainStream": "2Anime.Xyz",
+            "streams": [
+                {"name": "2Anime.Xyz", "endpoint": "https://2anime.xyz/embed/{title}-episode-{episode}", "live": true, "owner": "2Anime.Xyz"}
+            ]
+        },
+        {
+            "name": "VidSrc",
+            "mainStream": "VidSrc.Icu",
+            "streams": [
+                {"name": "VidSrc.Cc", "endpoint": "https://vidsrc.cc/v2/embed/anime/{id}/{episode}/{isDub}", "live": true, "owner": "VidSrc.Cc"},
+                {"name": "VidSrc.Icu", "endpoint": "https://vidsrc.icu/embed/anime/{id}/{episode}", "live": true, "owner": "VidSrc.Icu"}
+            ]
+        }
+    ],
+    "manga": [
+        {
+            "name": "VidSrc",
+            "mainStream": "VidSrc.Icu",
+            "streams": [
+                {"name": "VidSrc.Icu", "endpoint": "https://vidsrc.icu/embed/manga/{id}/{chapter}", "live": true, "owner": "VidSrc.Icu"}
+            ]
+        }
+    ],
+    "radio": [
+        {
+            "name": "RadioBrowser",
+            "mainStream": "RadioBrowser.Info",
+            "streams": [
+                {"name": "RadioBrowser.Info", "endpoint": "https://api.radio-browser.info/", "live": true, "owner": "RadioBrowser.Info"}
+            ]
+        }
+    ],
+    "tv": [
+        {
+            "name": "IPTV-Org",
+            "mainStream": "IPTV-Org",
+            "streams": [
+                {"name": "IPTV-Org", "endpoint": "https://iptv-org.github.io/iptv/index.m3u", "live": true, "owner": "IPTV-Org"},
+                {"name": "myIPTVChannels", "endpoint": "https://github.com/myIPTVChannels/lists", "live": true, "owner": "IPTV-Org"},
+                {"name": "M3UPT", "endpoint": "https://github.com/LITUATUI/M3UPT/blob/main/M3U/M3UPT.m3u", "live": true, "owner": "IPTV-Org"}
+            ]
+        }
+    ]
+}
