@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '@/components/ui/button'
 import { Menu } from 'lucide-react'
+import { MenuButton } from './menu-button'
 
 export function Navbar() {
     return (
@@ -25,15 +26,14 @@ export function Navbar() {
             })}
             </div>
             <Link href="/account" className="hidden sm:block text-sm font-medium text-foreground/80 hover:text-primary transition">
-                <Avatar className="w-8 h-8 ring-foreground hover:ring-primary ring-offset-background ring-1 ring-offset-2 cursor-pointer">
+                <Avatar className="mb-2 w-8 h-8 ring-primary hover:ring-foreground ring-offset-background ring-1 ring-offset-2 cursor-pointer">
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
             </Link>
-            <Button variant="ghost" className="sm:hidden">
-                <Menu />
-                Menu
-            </Button>
+            <div className="block sm:hidden">
+                <MenuButton />
+            </div>
         </nav>
     )
 }

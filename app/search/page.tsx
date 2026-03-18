@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -23,24 +24,30 @@ import { CarouselCard } from '@/components/carousel-card'
 import { Search } from 'lucide-react'
 
 export default function SearchPage() {
+  return (
+    <Suspense>
+      <SearchContent />
+    </Suspense>
+  )
+}
+
+function SearchContent() {
+  const searchParams = useSearchParams()
   const [query, setQuery] = useState('')
   const [type, setType] = useState<SearchQueryTypes>(SearchQueryTypes.All)
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!query.trim()) return
+  const performSearch = async (searchQuery: string, searchType: SearchQueryTypes) => {
+    if (!searchQuery.trim()) return
 
     setLoading(true)
     setSearched(true)
 
     try {
-      const res = await fetch(`/api/search?query=${encodeURIComponent(query)}&type=${type}`)
+      const res = await fetch(`/api/search?query=${encodeURIComponent(searchQuery)}&type=${searchType}`)
       const data = await res.json()
-      // Filter out people from multi search results
       const filteredResults = data.results?.filter(
         (item: SearchResult) => item.media_type !== 'person'
       ) || []
@@ -51,6 +58,19 @@ export default function SearchPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  useEffect(() => {
+    const urlQuery = searchParams.get('query')
+    if (urlQuery) {
+      setQuery(urlQuery)
+      performSearch(urlQuery, type)
+    }
+  }, [searchParams])
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault()
+    performSearch(query, type)
   }
 
   const getTitle = (item: SearchResult) => item.title || item.name || 'Untitled'
@@ -109,11 +129,8 @@ export default function SearchPage() {
           </Select>
           <InputGroup>
             <InputGroupInput type="text" placeholder="Type to search for movies or series..." value={query} onChange={(e) => setQuery(e.target.value)} />
-            <InputGroupAddon>
-              <Search />
-            </InputGroupAddon>
             <InputGroupAddon align="inline-end">
-              <InputGroupButton variant="default" type="submit" disabled={loading}>{loading ? 'Searching...' : 'Search'}</InputGroupButton>
+              <InputGroupButton type="submit" disabled={loading}><Search />{loading ? 'Searching...' : 'Search'}</InputGroupButton>
             </InputGroupAddon>
           </InputGroup>
         </form>

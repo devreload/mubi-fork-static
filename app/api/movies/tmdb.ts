@@ -93,3 +93,10 @@ export async function GetMovieDetails(id: string, lang: string = "en-US", detail
         throw new Error("Failed to fetch movie details. Maybe check your API key?")
     }
 }
+
+export async function GetMoviesDiscover(page: string = "1", lang: string = "en-US") {
+    const res = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=true&sort_by=popularity.desc&language=${lang}&page=${page}`, options)
+    if (!res.ok) throw new Error("Failed to fetch discover movies. Maybe check your API key?")
+    const data = await res.json()
+    return data
+}

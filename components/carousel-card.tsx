@@ -13,8 +13,8 @@ export function CarouselCard({ item }: { item: CardItem }) {
         : undefined
 
     return (
-        <div className="relative aspect-2/3 w-full overflow-hidden rounded-xl shadow-md">
-            <Link href={item.url ?? "/"} className="group block" aria-label={`View details for ${item.title}`}>
+        <Link href={item.url ?? "/"} className="group block" aria-label={`View details for ${item.title}`}>
+            <div className="relative aspect-2/3 w-full overflow-hidden rounded-xl shadow-md">
                 <Image
                     src={imageSrc}
                     alt={item.title ?? "Movie poster"}
@@ -32,7 +32,7 @@ export function CarouselCard({ item }: { item: CardItem }) {
                     View Details
                 </Button>
                 </div>
-            </Link>
-        </div>
+            </div>
+        </Link>
     )
 }

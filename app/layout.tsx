@@ -20,17 +20,17 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = {
+/*export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover"
-};
+};*/
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang={Config.lang} suppressHydrationWarning>
+    <html lang={Config.lang} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${lexend.variable} antialiased`}>
-          <ThemeProvider attribute="data-theme" defaultTheme={ThemeNames.DarkYellow} enableSystem enableColorScheme disableTransitionOnChange themes={Object.values(ThemeNames) as string[]}>
+          <ThemeProvider attribute="data-theme" defaultTheme={ThemeNames.Dark} enableSystem enableColorScheme disableTransitionOnChange themes={Object.values(ThemeNames) as string[]}>
             <Navbar />
             <main className="sm:pt-0 pt-16 sm:pl-20 flex-1 min-h-screen">
               {children}

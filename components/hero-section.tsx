@@ -17,7 +17,7 @@ export default async function HeroSection({ movie }: { movie?: Movie }) {
             <>
               <div className="flex items-end justify-between gap-8">
                 <div className="flex-1">
-                  <h1 className="text-4xl font-bold text-white drop-shadow-lg">{movie.title}</h1>
+                  <h1 className="text-sm sm:text-4xl font-bold text-white drop-shadow-lg">{movie.title}</h1>
                   <p className="line-clamp-4 hidden sm:block mt-2 text-md text-white/90 max-w-3xl drop-shadow-lg">{movie.overview}</p>
                 </div>
                 <div className="shrink-0 flex flex-col items-end gap-4">
