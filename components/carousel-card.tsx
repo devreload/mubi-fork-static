@@ -7,24 +7,27 @@ import { type CardItem } from "@/lib/models/card-item"
 
 export function CarouselCard({ item }: { item: CardItem }) {
     const imageSrc = getMediaImage(DBImageSizes.w342, item.poster_path) ?? "/movie_artwork.webp"
+    const title = 'title' in item ? item.title : 'name' in item ? item.name : "Unknown"
 
-    const year = item.release_date
+    const year = 'release_date' in item && item.release_date
         ? new Date(item.release_date).getFullYear()
+        : 'first_air_date' in item && item.first_air_date
+        ? new Date(item.first_air_date).getFullYear()
         : undefined
 
     return (
-        <Link href={item.url ?? "/"} className="group block" aria-label={`View details for ${item.title}`}>
+        <Link href={item.url ?? "/"} className="group block" aria-label={`View details for ${title}`}>
             <div className="relative aspect-2/3 w-full overflow-hidden rounded-xl shadow-md">
                 <Image
                     src={imageSrc}
-                    alt={item.title ?? "Movie poster"}
+                    alt={title ?? "Movie poster"}
                     fill
                     sizes="(max-width: 768px) 40vw, 15vw"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     priority={false}
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 p-4 text-center text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <h2 className="text-lg font-semibold">{item.title}</h2>
+                <h2 className="text-lg font-semibold">{title}</h2>
                 {year && (
                     <p className="text-sm text-gray-300">{year}</p>
                 )}
