@@ -13,12 +13,17 @@ export function MenuOverlay({ setMenuOpen }: { setMenuOpen: React.Dispatch<React
             </Button>
             {NavMenu.map((item) => {
                 return (
-                    <Link key={item.name} href={item.path} className="text-2xl font-medium text-white hover:text-primary transition">
+                    <Link
+                        key={item.name}
+                        href={item.path}
+                        onClick={() => setMenuOpen(false)}
+                        className="text-2xl font-medium text-white hover:text-primary transition"
+                    >
                         {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
                     </Link>
                 )
             })}
-            <Link href="/account" className="text-2xl font-medium text-white hover:text-primary transition">
+            <Link href="/account" onClick={() => setMenuOpen(false)} className="text-2xl font-medium text-white hover:text-primary transition">
                 Account
             </Link>
         </div>
