@@ -8,7 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { type CardItem } from "@/lib/models/card-item"
 import { Button } from "@/components/ui/button"
+import CarouselSection from "@/components/carousel-section"
 import {
   Carousel,
   CarouselContent,
@@ -37,6 +39,14 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
   const avgRuntime = serie.episode_run_time.length > 0
     ? Math.round(serie.episode_run_time.reduce((a, b) => a + b, 0) / serie.episode_run_time.length)
     : null
+
+  const similarSeries = serie.similar.results.map((s) => ({
+    id: s.id,
+    name: s.name,
+    poster_path: s.poster_path, 
+    vote_average: s.vote_average,
+    url: `/series/${s.id}`
+  })) as CardItem[]
 
   return (
     <main className="min-h-screen">
@@ -111,7 +121,7 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
                   src={getMediaImage(DBImageSizes.w500, serie.poster_path)!}
                   alt={serie.name}
                   fill
-                  sizes="10vw"
+                  sizes="30vw"
                   className="object-cover"
                 />
               )}
@@ -119,16 +129,16 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
 
             {/* Trailer Button */}
             {trailer && (
-              <Button className="w-full mt-4" size="lg">
-                <Link
+              <Link
                   href={`https://www.youtube.com/watch?v=${trailer.key}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Video className="w-4 h-4 mr-2" />
+              <Button className="w-full mt-4" size="lg">
+                  <Video className="w-4 h-4" />
                   Watch Trailer
-                </Link>
               </Button>
+              </Link>
             )}
           </div>
 
@@ -150,113 +160,27 @@ export default async function SeriePage({ params }: { params: Promise<{ id: stri
                   <p className="text-muted-foreground">{creator.name}</p>
                 </div>
               )}
-
-              {/* Additional Info */}
-              <div className="grid grid-cols-2 gap-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Status</CardTitle>
-                    <CardDescription>{serie.status}</CardDescription>
-                  </CardHeader>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Language</CardTitle>
-                    <CardDescription>{serie.original_language.toUpperCase()}</CardDescription>
-                  </CardHeader>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>First Aired</CardTitle>
-                    <CardDescription>{new Date(serie.first_air_date).toLocaleDateString()}</CardDescription>
-                  </CardHeader>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Last Aired</CardTitle>
-                    <CardDescription>{new Date(serie.last_air_date).toLocaleDateString()}</CardDescription>
-                  </CardHeader>
-                </Card>
-              </div>
+              {serie.credits.cast.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Main Cast</h3>
+                  <p className="text-muted-foreground">
+                    {serie.credits.cast.slice(0, 5).map((cast, index) => (
+                      <span key={cast.id}>
+                        {cast.name} as {cast.character}
+                        {index < serie.credits.cast.slice(0, 5).length - 1 && ', '}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Cast Section */}
-        {serie.credits.cast.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-3xl font-bold mb-6">Top Cast</h2>
-            <Carousel className="w-full">
-              <CarouselContent>
-                {serie.credits.cast.slice(0, 15).map((person) => (
-                  <CarouselItem key={person.id} className="basis-1/2 md:basis-1/4 lg:basis-1/6">
-                    <Card className="overflow-hidden">
-                      <div className="relative aspect-2/3 w-full">
-                        {person.profile_path ? (
-                          <Image
-                            src={getMediaImage(DBImageSizes.w185, person.profile_path)!}
-                            alt={person.name}
-                            fill
-                            sizes="10vw"
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-muted flex items-center justify-center">
-                            <span className="text-4xl">👤</span>
-                          </div>
-                        )}
-                      </div>
-                      <CardHeader className="p-3">
-                        <CardTitle className="text-sm line-clamp-1">{person.name}</CardTitle>
-                        <CardDescription className="text-xs line-clamp-2">
-                          {person.character}
-                        </CardDescription>
-                      </CardHeader>
-                    </Card>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          </div>
-        )}
-
         {/* Similar Series Section */}
         {serie.similar.results.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-3xl font-bold mb-6">Similar Series</h2>
-            <Carousel className="w-full">
-              <CarouselContent>
-                {serie.similar.results.slice(0, 10).map((similar) => (
-                  <CarouselItem key={similar.id} className="basis-1/2 md:basis-1/3 lg:basis-1/5">
-                    <Link href={`/series/${similar.id}`}>
-                      <Card className="overflow-hidden hover:ring-2 hover:ring-primary transition-all cursor-pointer">
-                        <div className="relative aspect-2/3 w-full">
-                          {similar.poster_path && (
-                            <Image
-                              src={getMediaImage(DBImageSizes.w342, similar.poster_path)!}
-                              alt={similar.name}
-                              fill
-                              sizes="10vw"
-                              className="object-cover"
-                            />
-                          )}
-                          <div className="absolute top-2 right-2 bg-yellow-500 text-black rounded-lg px-2 py-1 text-xs font-bold">
-                            ⭐ {similar.vote_average.toFixed(1)}
-                          </div>
-                        </div>
-                        <CardHeader className="p-3">
-                          <CardTitle className="text-sm line-clamp-2">{similar.name}</CardTitle>
-                        </CardHeader>
-                      </Card>
-                    </Link>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+            <CarouselSection items={similarSeries} title="Similar Series" />
           </div>
         )}
 

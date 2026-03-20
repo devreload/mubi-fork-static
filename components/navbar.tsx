@@ -2,8 +2,7 @@ import Link from 'next/link'
 import NavMenu from '@/lib/navmenu'
 import Image from 'next/image'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from '@/components/ui/button'
-import { Menu } from 'lucide-react'
+import { User } from 'lucide-react'
 import { MenuButton } from './menu-button'
 
 export function Navbar() {
@@ -26,9 +25,11 @@ export function Navbar() {
             })}
             </div>
             <Link href="/account" className="hidden sm:block text-sm font-medium text-foreground/80 hover:text-primary transition">
-                <Avatar className="mb-2 w-8 h-8 ring-primary hover:ring-foreground ring-offset-background ring-1 ring-offset-2 cursor-pointer">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
+                <Avatar className="mb-2 w-8 h-8 relative overflow-hidden ring-primary hover:ring-foreground ring-offset-background ring-1 ring-offset-2 cursor-pointer">
+                    <AvatarImage src="https://github.com/shadcn.png" className="absolute inset-0 w-full h-full object-cover" />
+                    <AvatarFallback className="flex items-center justify-center w-full h-full">
+                        <User className="w-4 h-4" />
+                    </AvatarFallback>
                 </Avatar>
             </Link>
             <div className="block sm:hidden">

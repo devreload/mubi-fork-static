@@ -8,7 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { type CardItem } from "@/lib/models/card-item"
 import { Button } from "@/components/ui/button"
+import CarouselSection from "@/components/carousel-section"
 import {
   Carousel,
   CarouselContent,
@@ -30,14 +32,6 @@ function formatRuntime(minutes: number): string {
   return `${hours}h ${mins}m`
 }
 
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
-
 export default async function MoviePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const movie = await GetMovieDetails(id)
@@ -48,6 +42,12 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
 
   const director = movie.credits.crew.find((person) => person.job === 'Director')
   const trailer = movie.videos.find((video) => video.type === 'Trailer' && video.site === 'YouTube')
+  const similarMovies = movie.similar.map((movie) => ({
+    id: movie.id,
+    title: movie.title,
+    poster_path: movie.poster_path,
+    url: `/movies/${movie.id}`
+  })) as CardItem[]
 
   return (
     <main className="min-h-screen">
@@ -64,7 +64,6 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
           />
         )}
         <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent" />
-        
         {/* Movie Info Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12">
           <div className="max-w-7xl mx-auto">
@@ -113,7 +112,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                   src={getMediaImage(DBImageSizes.w500, movie.poster_path)!}
                   alt={movie.title}
                   fill
-                  sizes="10vw"
+                  sizes="30vw"
                   className="object-cover"
                 />
               )}
@@ -121,16 +120,16 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
             
             {/* Trailer Button */}
             {trailer && (
-              <Button className="w-full mt-4" size="lg">
-                <Link
+              <Link
                   href={`https://www.youtube.com/watch?v=${trailer.key}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Video className="w-4 h-4 mr-2" />
-                  Watch Trailer
-                </Link>
-              </Button>
+                <Button className="w-full mt-4" size="lg">
+                    <Video className="w-4 h-4" />
+                    Watch Trailer
+                </Button>
+              </Link>
             )}
           </div>
 
@@ -152,117 +151,21 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                   <p className="text-muted-foreground">{director.name}</p>
                 </div>
               )}
-
-              {/* Additional Info */}
-              <div className="grid grid-cols-2 gap-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Status</CardTitle>
-                    <CardDescription>{movie.status}</CardDescription>
-                  </CardHeader>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Language</CardTitle>
-                    <CardDescription>{movie.original_language.toUpperCase()}</CardDescription>
-                  </CardHeader>
-                </Card>
-                {movie.budget > 0 && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Budget</CardTitle>
-                      <CardDescription>{formatCurrency(movie.budget)}</CardDescription>
-                    </CardHeader>
-                  </Card>
-                )}
-                {movie.revenue > 0 && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Revenue</CardTitle>
-                      <CardDescription>{formatCurrency(movie.revenue)}</CardDescription>
-                    </CardHeader>
-                  </Card>
-                )}
-              </div>
+              {movie.credits.cast.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Top Cast</h3>
+                  <p className="text-muted-foreground">
+                    {movie.credits.cast.slice(0, 5).map((person) => (person.name + (person.character ? ` as ${person.character}` : ''))).join(', ')}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
-
-        {/* Cast Section */}
-        {movie.credits.cast.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-3xl font-bold mb-6">Top Cast</h2>
-            <Carousel className="w-full">
-              <CarouselContent>
-                {movie.credits.cast.slice(0, 15).map((person) => (
-                  <CarouselItem key={person.id} className="basis-1/2 md:basis-1/4 lg:basis-1/6">
-                    <Card className="overflow-hidden">
-                      <div className="relative aspect-2/3 w-full">
-                        {person.profile_path ? (
-                          <Image
-                            src={getMediaImage(DBImageSizes.w154, person.profile_path)!}
-                            alt={person.name}
-                            fill
-                            sizes="10vw"
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-muted flex items-center justify-center">
-                            <span className="text-4xl">👤</span>
-                          </div>
-                        )}
-                      </div>
-                      <CardHeader className="p-3">
-                        <CardTitle className="text-sm line-clamp-1">{person.name}</CardTitle>
-                        <CardDescription className="text-xs line-clamp-2">
-                          {person.character}
-                        </CardDescription>
-                      </CardHeader>
-                    </Card>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          </div>
-        )}
-
         {/* Similar Movies Section */}
         {movie.similar.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-3xl font-bold mb-6">Similar Movies</h2>
-            <Carousel className="w-full">
-              <CarouselContent>
-                {movie.similar.slice(0, 10).map((similar) => (
-                  <CarouselItem key={similar.id} className="basis-1/2 md:basis-1/3 lg:basis-1/5">
-                    <Link href={`/movies/${similar.id}`}>
-                      <Card className="overflow-hidden hover:ring-2 hover:ring-primary transition-all cursor-pointer">
-                        <div className="relative aspect-2/3 w-full">
-                          {similar.poster_path && (
-                            <Image
-                              src={getMediaImage(DBImageSizes.w342, similar.poster_path)!}
-                              alt={similar.title}
-                              fill
-                              sizes="10vw"
-                              className="object-cover"
-                            />
-                          )}
-                          <div className="absolute top-2 right-2 bg-yellow-500 text-black rounded-lg px-2 py-1 text-xs font-bold">
-                            ⭐ {similar.vote_average.toFixed(1)}
-                          </div>
-                        </div>
-                        <CardHeader className="p-3">
-                          <CardTitle className="text-sm line-clamp-2">{similar.title}</CardTitle>
-                        </CardHeader>
-                      </Card>
-                    </Link>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+            <CarouselSection items={similarMovies} title="Similar Movies" />
           </div>
         )}
 

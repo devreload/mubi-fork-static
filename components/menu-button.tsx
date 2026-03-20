@@ -2,8 +2,6 @@
 import { useState } from "react"
 import Link from 'next/link'
 import NavMenu from '@/lib/navmenu'
-import Image from 'next/image'
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '@/components/ui/button'
 import { Menu } from 'lucide-react'
 

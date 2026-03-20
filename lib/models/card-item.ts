@@ -1,3 +1,3 @@
-export type CardItem = Movie & {
+export type CardItem = (Movie | Serie) & {
     url?: string;
 };
