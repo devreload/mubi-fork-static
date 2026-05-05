@@ -40,6 +40,22 @@ export default <VidsrcConfig>{
                 movie: 'embed/movie/{id}',
                 tv: 'embed/tv/{id}/{s}/{e}'
             }
+        },
+        'streamimdb': {
+            name: 'StreamImdb',
+            domains: ['https://streamimdb.ru/'],
+            paths: {
+                movie: 'embed/movie/{id}',
+                tv: 'embed/tv/{id}/{s}/{e}'
+            }
+        },
+        'vaplayer': {
+            name: 'Vaplayer',
+            domains: ['https://vaplayer.ru/'],
+            paths: {
+                movie: 'embed/movie/{id}',
+                tv: 'embed/tv/{id}/{s}/{e}'
+            }
         }
     }
 } as VidsrcConfig
